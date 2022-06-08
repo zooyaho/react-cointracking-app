@@ -6,7 +6,7 @@ const Router = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/:coinId"><Coin /></Route>
-      <Route path="/"><Coins /></Route>
+      <Route path={`${process.env.PUBLIC_URL}/`}><Coins /></Route>
     </Switch>
   </BrowserRouter>
 );
