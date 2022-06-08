@@ -15,6 +15,10 @@ const Header = styled.header`
   align-items: center;
 `;
 
+const Loader = styled.span`
+  text-align: center;
+  display: block;
+`;
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
@@ -54,10 +58,12 @@ interface coinInterface {
 
 const Coins = () => {
   const [coins, setCoins] = useState<coinInterface[]>([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     (async () => {
       const json = await (await fetch("https://api.coinpaprika.com/v1/coins")).json();
       setCoins(json.slice(0,100));
+      setLoading(false);
     })();
   }, []);
 
@@ -67,7 +73,7 @@ const Coins = () => {
         <Title>Coins</Title>
       </Header>
       <CoinsList>
-        {coins.map((coin) => (
+        {loading ? <Loader>Loading...</Loader>:coins.map((coin) => (
           <Coin key={coin.id}>
             <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
           </Coin>
