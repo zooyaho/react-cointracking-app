@@ -131,16 +131,17 @@ interface IpriceData {
 }
 
 const Coin = () => {
-  const [loading, setLoading] = useState(true);
   const { coinId } = useParams(); // react-router-dom 버전 6부터는 타입지정 안해도 됨.
   const { state } = useLocation() as RouteState;
   // API 요청 전, state를 통한 coin.name을 전달할 수 있으므로 화면에 재빨리 표시할 수 있음.
   // 다만 문제는 <Coin> ⇒ <Coins> 가 아닌 바로 <Coins> 로 접근했을 때는 받아올 coin.name이 없으므로 안전장치가 필요함. => {state?.name || 'Loading'}
-  const [info, setInfo] = useState<IinfoData>();
-  const [priceInfo, setPriceInfo] = useState<IpriceData>();
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
-  console.log(priceMatch);
+
+  const [loading, setLoading] = useState(true);
+  const [info, setInfo] = useState<IinfoData>();
+  const [priceInfo, setPriceInfo] = useState<IpriceData>();
+  
 
   useEffect(() => {
     (async () => {
