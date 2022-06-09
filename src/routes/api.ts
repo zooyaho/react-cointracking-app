@@ -9,10 +9,7 @@ const [coins, setCoins] = useState<coinInterface[]>([]);
     })();
   }, []);
 */
-
-
 export const fetchCoins = async () => {
   // json data의 promise를 리턴해줘야 함.
   return await (await fetch("https://api.coinpaprika.com/v1/coins")).json();
-
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import Router from './Router';
+import {ReactQueryDevtools} from 'react-query/devtools'
 
 // Reset CSS
 const GlobalStyle = createGlobalStyle`
@@ -72,6 +73,7 @@ function App() {
     <React.Fragment>
       <GlobalStyle />
       <Router />
+       <ReactQueryDevtools initialIsOpen={true} />
     </React.Fragment>
   );
 }

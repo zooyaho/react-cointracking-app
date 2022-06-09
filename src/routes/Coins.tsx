@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
@@ -79,8 +78,6 @@ const Coins = () => {
     })();
   }, []);
   */
-  console.log(data?.slice(0, 100));
-
   return (
     <Container>
       <Header>
