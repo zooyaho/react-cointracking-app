@@ -141,7 +141,6 @@ const Coin = () => {
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<IinfoData>();
   const [priceInfo, setPriceInfo] = useState<IpriceData>();
-  
 
   useEffect(() => {
     (async () => {
