@@ -25,6 +25,29 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
+const Overview = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+const OverviewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span:first-child {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+`;
+const Description = styled.p`
+  margin: 20px 0px;
+`;
+
+
 interface RouteState {
   state: {
     name: string;
@@ -105,14 +128,48 @@ const Coin = () => {
       setPriceInfo(priceData);
       setLoading(false);
     })();
-  }, []);
+  }, [coinId]);
+  // coinId은 컴포넌트의 일생동안 변하지 않기 때문에 의존성에 추가해도 한번만 실행하므로 괜찮음.
 
   return (
     <Container>
       <Header>
-        <Title>{state?.name || 'Loading'}</Title>
+        <Title>
+          {/* Coins로부터 들어온게 아니라 바로 Coin화면으로 들어왔을 경우 API로부터 받은 name으로 title 출력 */}
+          {state?.name ? state.name : loading ? "Loading..." : info?.name}
+        </Title>
       </Header>
-      {loading ? <Loader>Loading...</Loader> : priceInfo?.quotes.USD.ath_date}
+      {loading ? (
+        <Loader>Loading...</Loader>
+      ) : (
+        <>
+          <Overview>
+            <OverviewItem>
+              <span>Rank:</span>
+              <span>{info?.rank}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Symbol:</span>
+              <span>${info?.symbol}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Open Source:</span>
+              <span>{info?.open_source ? "Yes" : "No"}</span>
+            </OverviewItem>
+          </Overview>
+          <Description>{info?.description}</Description>
+          <Overview>
+            <OverviewItem>
+              <span>Total Suply:</span>
+              <span>{priceInfo?.total_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Max Supply:</span>
+              <span>{priceInfo?.max_supply}</span>
+            </OverviewItem>
+          </Overview>
+        </>
+      )}
     </Container>
   );
 };
