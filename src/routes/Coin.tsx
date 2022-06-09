@@ -216,8 +216,8 @@ const Coin = () => {
                 <Link to={`/${coinId}/price`}>Price</Link>
               </Tab>
             </Tabs>
+            {/* Chart, Price 화면 전환을 위한 하위 route 표시 */}
             <Outlet />
-
           </>
         )}
       </Container>
