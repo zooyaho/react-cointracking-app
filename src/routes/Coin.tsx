@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useParams, useLocation, useMatch, Outlet, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchCoinInfo, fetchCoinTickers } from './api';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -138,6 +139,12 @@ const Coin = () => {
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
 
+  // 각각의 고유 id로 coinId가 적절하지만 두 쿼리 모두 같은 아이디를 가리키고 있어 캐시에 저장되는 쿼리를 식별하기에 적절하지 않음. => 배열로 저장되어 있기때문에 식별 문자를 추가하면 됨.
+  const { isLoading: infoLoading, data: infoData } = useQuery<IinfoData>(["info", coinId], () => fetchCoinInfo(coinId!));
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<IpriceData>(["tickers", coinId], () => fetchCoinTickers(coinId!));
+  // !:  non-null assertion 연산자를 써서 피연산자가 null이나 undefined가 아닐 거라고(=항상 값이 할당될 거라고) 주장할 수 있음.
+
+  /*
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<IinfoData>();
   const [priceInfo, setPriceInfo] = useState<IpriceData>();
@@ -153,42 +160,44 @@ const Coin = () => {
     })();
   }, [coinId]);
   // coinId은 컴포넌트의 일생동안 변하지 않기 때문에 의존성에 추가해도 한번만 실행하므로 괜찮음.
-
+  */
+  const isLoading = infoLoading && tickersLoading;
+  
   return (
     <Container>
       <Header>
         <Title>
           {/* Coins로부터 들어온게 아니라 바로 Coin화면으로 들어왔을 경우 API로부터 받은 name으로 title 출력 */}
-          {state?.name ? state.name : loading ? "Loading..." : info?.name}
+          {state?.name ? state.name : isLoading ? "Loading..." : infoData?.name}
         </Title>
       </Header>
-      {loading ? (
+      {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${info?.symbol}</span>
+              <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Open Source:</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>{infoData?.open_source ? "Yes" : "No"}</span>
             </OverviewItem>
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{tickersData?.max_supply}</span>
             </OverviewItem>
           </Overview>
           <Tabs>
