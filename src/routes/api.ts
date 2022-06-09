@@ -1,15 +1,14 @@
-/*
-const [coins, setCoins] = useState<coinInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    (async () => {
-      const json = await (await fetch("https://api.coinpaprika.com/v1/coins")).json();
-      setCoins(json.slice(0, 100));
-      setLoading(false);
-    })();
-  }, []);
-*/
-export const fetchCoins = async () => {
+const BASE_URL = "https://api.coinpaprika.com/v1";
+
+export async function fetchCoins() {
   // json data의 promise를 리턴해줘야 함.
-  return await (await fetch("https://api.coinpaprika.com/v1/coins")).json();
+  return await (await fetch(`${BASE_URL}/coins`)).json();
+}
+
+export async function fetchCoinInfo(coinId: string) {
+  return await (await fetch(`${BASE_URL}/coins/${coinId}`)).json();
+}
+
+export async function fetchCoinTickers(coinId: string) {
+  return await (await fetch(`${BASE_URL}/tickers/${coinId}`)).json();
 }
