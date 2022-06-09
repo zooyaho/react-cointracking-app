@@ -27,7 +27,7 @@ const Chart = () => {
           series={[
             {
               name: "sales",
-              data: data?.map(price => price.close)!
+              data: data?.map(price => price.close)!,
             },
           ]}
           options={{
@@ -36,7 +36,16 @@ const Chart = () => {
             grid: { show: false },
             stroke: { curve: "smooth" },
             yaxis: { show: false },
-            xaxis: { axisBorder: { show: false }, axisTicks: { show: false }, labels: { show: false } },
+            xaxis: {
+              axisBorder: { show: false }, 
+              axisTicks: { show: false },
+              labels: { show: false },
+              type: 'datetime',
+              categories: data?.map(price => price.time_close)!,
+            },
+            fill: { type: "gradient", gradient: { gradientToColors: ["#c56cf0"], stops: [0, 100] } },
+            colors: ["#18dcff"],
+            tooltip: { y: { formatter: (value) => `$ ${value.toFixed(3)}` } }
           }}
         />
       }
