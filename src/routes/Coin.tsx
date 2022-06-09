@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'; //문서의 <head>의 <title>을 변경할 수 있음.
 import { useQuery } from 'react-query';
 import { useParams, useLocation, useMatch, Outlet, Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -162,58 +163,65 @@ const Coin = () => {
   // coinId은 컴포넌트의 일생동안 변하지 않기 때문에 의존성에 추가해도 한번만 실행하므로 괜찮음.
   */
   const isLoading = infoLoading && tickersLoading;
-  
-  return (
-    <Container>
-      <Header>
-        <Title>
-          {/* Coins로부터 들어온게 아니라 바로 Coin화면으로 들어왔을 경우 API로부터 받은 name으로 title 출력 */}
-          {state?.name ? state.name : isLoading ? "Loading..." : infoData?.name}
-        </Title>
-      </Header>
-      {isLoading ? (
-        <Loader>Loading...</Loader>
-      ) : (
-        <>
-          <Overview>
-            <OverviewItem>
-              <span>Rank:</span>
-              <span>{infoData?.rank}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
-            </OverviewItem>
-          </Overview>
-          <Description>{infoData?.description}</Description>
-          <Overview>
-            <OverviewItem>
-              <span>Total Suply:</span>
-              <span>{tickersData?.total_supply}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Max Supply:</span>
-              <span>{tickersData?.max_supply}</span>
-            </OverviewItem>
-          </Overview>
-          <Tabs>
-            {/* isActive에 true/false 할당해야하니까 */}
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
-            </Tab>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
-            </Tab>
-          </Tabs>
-          <Outlet />
 
-        </>
-      )}
-    </Container>
+  return (
+    <>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : isLoading ? 'MyCoins' : infoData?.name}
+        </title>
+      </Helmet>
+      <Container>
+        <Header>
+          <Title>
+            {/* Coins로부터 들어온게 아니라 바로 Coin화면으로 들어왔을 경우 API로부터 받은 name으로 title 출력 */}
+            {state?.name ? state.name : isLoading ? "Loading..." : infoData?.name}
+          </Title>
+        </Header>
+        {isLoading ? (
+          <Loader>Loading...</Loader>
+        ) : (
+          <>
+            <Overview>
+              <OverviewItem>
+                <span>Rank:</span>
+                <span>{infoData?.rank}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Symbol:</span>
+                <span>${infoData?.symbol}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Open Source:</span>
+                <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              </OverviewItem>
+            </Overview>
+            <Description>{infoData?.description}</Description>
+            <Overview>
+              <OverviewItem>
+                <span>Total Suply:</span>
+                <span>{tickersData?.total_supply}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Max Supply:</span>
+                <span>{tickersData?.max_supply}</span>
+              </OverviewItem>
+            </Overview>
+            <Tabs>
+              {/* isActive에 true/false 할당해야하니까 */}
+              <Tab isActive={chartMatch !== null}>
+                <Link to={`/${coinId}/chart`}>Chart</Link>
+              </Tab>
+              <Tab isActive={priceMatch !== null}>
+                <Link to={`/${coinId}/price`}>Price</Link>
+              </Tab>
+            </Tabs>
+            <Outlet />
+
+          </>
+        )}
+      </Container>
+    </>
   );
 };
 
