@@ -143,8 +143,8 @@ const Coin = () => {
   // 각각의 고유 id로 coinId가 적절하지만 두 쿼리 모두 같은 아이디를 가리키고 있어 캐시에 저장되는 쿼리를 식별하기에 적절하지 않음. => 배열로 저장되어 있기때문에 식별 문자를 추가하면 됨.
   const { isLoading: infoLoading, data: infoData } = useQuery<IinfoData>(["info", coinId], () => fetchCoinInfo(coinId!));
   const { isLoading: tickersLoading, data: tickersData } = useQuery<IpriceData>(
-    ["tickers", coinId], 
-    () => fetchCoinTickers(coinId!), 
+    ["tickers", coinId],
+    () => fetchCoinTickers(coinId!),
     {
       refetchInterval: 5000
     }
@@ -172,12 +172,12 @@ const Coin = () => {
 
   return (
     <>
-      <Helmet>
-        <title>
-          {state?.name ? state.name : isLoading ? 'MyCoins' : infoData?.name}
-        </title>
-      </Helmet>
       <Container>
+        <Helmet>
+          <title>
+            {state?.name ? state.name : isLoading ? 'MyCoins' : infoData?.name}
+          </title>
+        </Helmet>
         <Header>
           <Title>
             {/* Coins로부터 들어온게 아니라 바로 Coin화면으로 들어왔을 경우 API로부터 받은 name으로 title 출력 */}
