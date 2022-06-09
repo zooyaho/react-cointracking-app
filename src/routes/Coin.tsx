@@ -142,7 +142,13 @@ const Coin = () => {
 
   // 각각의 고유 id로 coinId가 적절하지만 두 쿼리 모두 같은 아이디를 가리키고 있어 캐시에 저장되는 쿼리를 식별하기에 적절하지 않음. => 배열로 저장되어 있기때문에 식별 문자를 추가하면 됨.
   const { isLoading: infoLoading, data: infoData } = useQuery<IinfoData>(["info", coinId], () => fetchCoinInfo(coinId!));
-  const { isLoading: tickersLoading, data: tickersData } = useQuery<IpriceData>(["tickers", coinId], () => fetchCoinTickers(coinId!));
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<IpriceData>(
+    ["tickers", coinId], 
+    () => fetchCoinTickers(coinId!), 
+    {
+      refetchInterval: 5000
+    }
+  );
   // !:  non-null assertion 연산자를 써서 피연산자가 null이나 undefined가 아닐 거라고(=항상 값이 할당될 거라고) 주장할 수 있음.
 
   /*
@@ -192,8 +198,8 @@ const Coin = () => {
                 <span>${infoData?.symbol}</span>
               </OverviewItem>
               <OverviewItem>
-                <span>Open Source:</span>
-                <span>{infoData?.open_source ? "Yes" : "No"}</span>
+                <span>Price:</span>
+                <span>{tickersData?.quotes.USD.price.toFixed(2)}</span>
               </OverviewItem>
             </Overview>
             <Description>{infoData?.description}</Description>
