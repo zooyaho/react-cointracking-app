@@ -17,35 +17,37 @@ interface IHistorical {
 
 const Chart = () => {
   const { coinId } = useParams();
-  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () => fetchCoinHistory(coinId!),{refetchInterval: 1000});
+  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () => fetchCoinHistory(coinId!), { refetchInterval: 10000 });
+  
   return (
     <div>
       {isLoading ?
         "Loading chart..." :
         <ApexChart
-          type='line'
+          type='candlestick'
           series={[
             {
-              name: "sales",
-              data: data?.map(price => price.close)!,
+              data: data?.map((price) => {
+                return { x: price.time_close, y: [price.open.toFixed(2), price.high.toFixed(2), price.low.toFixed(2), price.close.toFixed(2)] }
+              })!
             },
           ]}
           options={{
             theme: { mode: "dark" },
-            chart: { height: 500, width: 500, toolbar: { show: false }, background: "transparent" },
-            grid: { show: false },
-            stroke: { curve: "smooth" },
-            yaxis: { show: false },
+            chart: { height: 350, width: 500, toolbar: { show: false }, background: "transparent" },
+            grid: { show: true },
+            yaxis: { 
+              show: true,
+              labels: {
+                formatter: function(val) {
+                  return val.toFixed(2);
+                }
+              },
+             },
             xaxis: {
-              axisBorder: { show: false }, 
-              axisTicks: { show: false },
-              labels: { show: false },
+              labels: { show: true },
               type: 'datetime',
-              categories: data?.map(price => price.time_close)!,
             },
-            fill: { type: "gradient", gradient: { gradientToColors: ["#c56cf0"], stops: [0, 100] } },
-            colors: ["#18dcff"],
-            tooltip: { y: { formatter: (value) => `$ ${value.toFixed(3)}` } }
           }}
         />
       }
