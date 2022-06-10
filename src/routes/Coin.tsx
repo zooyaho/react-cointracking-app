@@ -12,9 +12,19 @@ const Container = styled.div`
 
 const Header = styled.header`
   height: 25vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  a {
+    background-color: transparent;
+    color: ${(props) => props.theme.textColor};
+    border: 0px;
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    display:flex;
+    align-items: center;
+    z-index: 2;
+  };
 `;
 
 const Loader = styled.span`
@@ -25,6 +35,14 @@ const Loader = styled.span`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top:0;
+  left: 0;
+  right:0;
+  bottom: 0;
 `;
 
 const Overview = styled.div`
@@ -179,6 +197,7 @@ const Coin = () => {
           </title>
         </Helmet>
         <Header>
+          <Link to={`/`}>&larr; Back</Link>
           <Title>
             {/* Coins로부터 들어온게 아니라 바로 Coin화면으로 들어왔을 경우 API로부터 받은 name으로 title 출력 */}
             {state?.name ? state.name : isLoading ? "Loading..." : infoData?.name}
