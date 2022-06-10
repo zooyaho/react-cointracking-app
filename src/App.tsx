@@ -1,7 +1,9 @@
-import React from 'react';
-import { createGlobalStyle } from 'styled-components';
+import React, { useContext} from 'react';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Router from './Router';
-import {ReactQueryDevtools} from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools'
+import { lightTheme, DarkTheme } from './theme';
+import ModeContext from './store/mode-context';
 
 // Reset CSS
 const GlobalStyle = createGlobalStyle`
@@ -68,13 +70,15 @@ a {
 `;
 
 function App() {
+  const modeCtx = useContext(ModeContext);
 
   return (
-    <React.Fragment>
+    <ThemeProvider theme={modeCtx.isLightMode ? lightTheme : DarkTheme}>
       <GlobalStyle />
-      <Router />
-       <ReactQueryDevtools initialIsOpen={true} />
-    </React.Fragment>
+      <button onClick={modeCtx.toggleMode}>{modeCtx.isLightMode ? "Dark" : "Light" }</button>
+      <Router/>
+      <ReactQueryDevtools initialIsOpen={true} />
+    </ThemeProvider>
   );
 }
 

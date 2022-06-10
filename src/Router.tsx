@@ -3,7 +3,7 @@ import Chart from './routes/Chart';
 import Coin from './routes/Coin';
 import Coins from './routes/Coins';
 import Price from './routes/Price';
-// path={`${process.env.PUBLIC_URL}/`}
+
 const Router = () => (
   <BrowserRouter>
     <Routes>
