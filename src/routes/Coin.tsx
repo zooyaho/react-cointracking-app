@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 25vh;
+  height: 15vh;
   position: relative;
   a {
     background-color: transparent;

@@ -1,5 +1,5 @@
-import React, { useContext} from 'react';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import React, { useContext } from 'react';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Router from './Router';
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { lightTheme, DarkTheme } from './theme';
@@ -69,14 +69,27 @@ a {
 }
 `;
 
+const ModeToggleBtn = styled.button`
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px #ccc;
+  border-radius: 20px;
+  padding: 5px;
+  font-size: 25px;
+  position: fixed;
+  top: 2rem;
+  right: 5rem;
+  z-index: 2;
+`;
+
 function App() {
   const modeCtx = useContext(ModeContext);
 
   return (
     <ThemeProvider theme={modeCtx.isLightMode ? lightTheme : DarkTheme}>
       <GlobalStyle />
-      <button onClick={modeCtx.toggleMode}>{modeCtx.isLightMode ? "Dark" : "Light" }</button>
-      <Router/>
+      <ModeToggleBtn onClick={modeCtx.toggleMode}>{modeCtx.isLightMode ? "🌚" : "🌝"}</ModeToggleBtn>
+      <Router />
       <ReactQueryDevtools initialIsOpen={true} />
     </ThemeProvider>
   );

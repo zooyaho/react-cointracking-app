@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { fetchCoinTickers } from './api';
 import ApexChart from "react-apexcharts";
+import ModeContext from '../store/mode-context';
 
 interface IpriceData {
   id: string;
@@ -75,7 +76,8 @@ const ChartSection = styled.div`
 const Price = () => {
   const { coinId } = useParams();
   const { isLoading, data } = useQuery<IpriceData>(["price", coinId], () => fetchCoinTickers(coinId!), { refetchInterval: 10000 });
-  // price: {data?.quotes.USD.price.toFixed(2)}
+  const modeCtx = useContext(ModeContext);
+
   return (
     <>
       {isLoading ? "Loading..." :
@@ -136,7 +138,7 @@ const Price = () => {
                 ]}
                 options={{
                   theme: {
-                    mode: "dark",
+                    mode: modeCtx.isLightMode? "light" :"dark",
                   },
                   chart: {
                     height: 300,
